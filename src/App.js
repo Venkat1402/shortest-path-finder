@@ -1,7 +1,11 @@
+import React from "react";
 import "./App.css";
+import PathFindingVisualizer from "./PathFindingVisualizer/PathFindingVisualizer";
 
-function App() {
-  return <div className="App">Initial Commit</div>;
+export default function App() {
+  return (
+    <div className="App">
+      <PathFindingVisualizer />
+    </div>
+  );
 }
-
-export default App;

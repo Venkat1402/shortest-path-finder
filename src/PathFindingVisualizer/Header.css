@@ -1,0 +1,52 @@
+button {
+  cursor: pointer;
+}
+.top-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgb(12, 53, 71);
+}
+h2 {
+  color: white;
+  margin-left: 20px;
+}
+.buttons-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+button {
+  color: rgb(12, 53, 71);
+  /* background-color: rgb(41, 164, 212); */
+  font-weight: bold;
+  background-color: white;
+  display: flex;
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+  border: none;
+  border-radius: 4px;
+}
+.movement-buttons {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.movement-buttons button {
+  height: 20px;
+  width: 20px;
+  text-align: center;
+}
+
+span {
+  color: white;
+  text-align: center;
+  border: 1px solid white;
+  font-weight: bold;
+}
