@@ -44,9 +44,9 @@ const PathFindingVisualizer = () => {
 
   const getInitailaGrid = () => {
     const grid = [];
-    for (let row = 0; row < 20; row++) {
+    for (let row = 0; row < 28; row++) {
       const currentRow = [];
-      for (let col = 0; col < 50; col++) {
+      for (let col = 0; col < 60; col++) {
         currentRow.push(createNode(col, row));
       }
       grid.push(currentRow);
@@ -138,8 +138,8 @@ const PathFindingVisualizer = () => {
   }
 
   function clearBoard() {
-    for (let i = 0; i < 20; i++) {
-      for (let j = 0; j < 50; j++) {
+    for (let i = 0; i < 28; i++) {
+      for (let j = 0; j < 60; j++) {
         if (grid[i][j] === grid[startNodeRow][startNodeCol]) {
           setStartNodeRow(10);
           setStartNodeCol(15);
@@ -162,7 +162,7 @@ const PathFindingVisualizer = () => {
   }
   //////////////////////////// Start and Finish Nodes Movement /////////////////////////////////////////////////////////////
   function startUp() {
-    if (startNodeRow > 1 && startNodeRow < 20) {
+    if (startNodeRow > 1 && startNodeRow < 28) {
       document.getElementById(
         `node-${startNodeRow}-${startNodeCol}`
       ).className = "node";
@@ -173,7 +173,7 @@ const PathFindingVisualizer = () => {
     }
   }
   function startDown() {
-    if (startNodeRow > 0 && startNodeRow < 19) {
+    if (startNodeRow > 0 && startNodeRow < 27) {
       document.getElementById(
         `node-${startNodeRow}-${startNodeCol}`
       ).className = "node";
@@ -184,7 +184,7 @@ const PathFindingVisualizer = () => {
     }
   }
   function startLeft() {
-    if (startNodeCol > 1 && startNodeCol < 50) {
+    if (startNodeCol > 1 && startNodeCol < 60) {
       document.getElementById(
         `node-${startNodeRow}-${startNodeCol}`
       ).className = "node";
@@ -196,7 +196,7 @@ const PathFindingVisualizer = () => {
   }
 
   function startRight() {
-    if (startNodeCol > 0 && startNodeCol < 49) {
+    if (startNodeCol > 0 && startNodeCol < 59) {
       document.getElementById(
         `node-${startNodeRow}-${startNodeCol}`
       ).className = "node";
@@ -208,7 +208,7 @@ const PathFindingVisualizer = () => {
   }
   ///////////////////////////////////////////////////////////////////////////////
   function finishUp() {
-    if (finishNodeRow > 1 && finishNodeRow < 20) {
+    if (finishNodeRow > 1 && finishNodeRow < 28) {
       document.getElementById(
         `node-${finishNodeRow}-${finishNodeCol}`
       ).className = "node";
@@ -219,7 +219,7 @@ const PathFindingVisualizer = () => {
     }
   }
   function finishDown() {
-    if (finishNodeRow > 0 && finishNodeRow < 19) {
+    if (finishNodeRow > 0 && finishNodeRow < 27) {
       document.getElementById(
         `node-${finishNodeRow}-${finishNodeCol}`
       ).className = "node";
@@ -230,7 +230,7 @@ const PathFindingVisualizer = () => {
     }
   }
   function finishLeft() {
-    if (finishNodeCol > 1 && finishNodeCol < 50) {
+    if (finishNodeCol > 1 && finishNodeCol < 60) {
       document.getElementById(
         `node-${finishNodeRow}-${finishNodeCol}`
       ).className = "node";
@@ -242,7 +242,7 @@ const PathFindingVisualizer = () => {
   }
 
   function finishRight() {
-    if (finishNodeCol > 0 && finishNodeCol < 49) {
+    if (finishNodeCol > 0 && finishNodeCol < 59) {
       document.getElementById(
         `node-${finishNodeRow}-${finishNodeCol}`
       ).className = "node";
@@ -313,47 +313,50 @@ const PathFindingVisualizer = () => {
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   return (
     <>
-      <div>
-        <Header
-          visualizeDijkstra={visualizeDijkstra}
-          resetGrid={resetGrid}
-          startUp={startUp}
-          startDown={startDown}
-          startLeft={startLeft}
-          startRight={startRight}
-          finishUp={finishUp}
-          finishDown={finishDown}
-          finishLeft={finishLeft}
-          finishRight={finishRight}
-          createMaze={createMaze}
-          clearBoard={clearBoard}
-        />
-      </div>
-      <div className="main">
-        <div className="grid">
-          {grid.map((row, rowIndex) => {
-            return (
-              <div key={rowIndex}>
-                {row.map((node, nodeIndex) => {
-                  const { row, col, isStart, isFinish, isWall } = node;
-                  return (
-                    <Node
-                      key={nodeIndex}
-                      row={row}
-                      col={col}
-                      isStart={isStart}
-                      isFinish={isFinish}
-                      isWall={isWall}
-                      mouseIsPressed={mouseIsPressed}
-                      onMouseDown={(row, col) => handleMouseDown(row, col)}
-                      onMouseEnter={(row, col) => handleMouseEnter(row, col)}
-                      onMouseUp={() => handleMouseUp()}
-                    ></Node>
-                  );
-                })}
-              </div>
-            );
-          })}
+      <div className="total-screen">
+        <div>
+          <Header
+            visualizeDijkstra={visualizeDijkstra}
+            resetGrid={resetGrid}
+            startUp={startUp}
+            startDown={startDown}
+            startLeft={startLeft}
+            startRight={startRight}
+            finishUp={finishUp}
+            finishDown={finishDown}
+            finishLeft={finishLeft}
+            finishRight={finishRight}
+            createMaze={createMaze}
+            clearBoard={clearBoard}
+          />
+        </div>
+        <div className="main">
+          <div className="grid">
+            {grid.map((row, rowIndex) => {
+              return (
+                // setting same height as node to avoid distance between rows
+                <div key={rowIndex} style={{ height: "20px" }}>
+                  {row.map((node, nodeIndex) => {
+                    const { row, col, isStart, isFinish, isWall } = node;
+                    return (
+                      <Node
+                        key={nodeIndex}
+                        row={row}
+                        col={col}
+                        isStart={isStart}
+                        isFinish={isFinish}
+                        isWall={isWall}
+                        mouseIsPressed={mouseIsPressed}
+                        onMouseDown={(row, col) => handleMouseDown(row, col)}
+                        onMouseEnter={(row, col) => handleMouseEnter(row, col)}
+                        onMouseUp={() => handleMouseUp()}
+                      ></Node>
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </>

@@ -1,3 +1,6 @@
+.header {
+  min-width: 1230px;
+}
 button {
   cursor: pointer;
 }

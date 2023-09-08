@@ -1,6 +1,16 @@
-.main {
+.html {
+  text-align: center;
+  min-width: 1230px;
+}
+.total-screen {
   border: 5px solid rgb(12, 53, 71);
+  min-width: 1230px;
+}
+
+.main {
   border-top: 5px solid white;
+  border-bottom: 5px solid white;
   display: flex;
   justify-content: center;
+  min-width: 1230px;
 }
