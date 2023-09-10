@@ -15,6 +15,7 @@ const Header = (props) => {
     finishRight,
     createMaze,
     clearBoard,
+    help,
     buttonsDisabled,
   } = props;
   return (
@@ -60,7 +61,7 @@ const Header = (props) => {
           <button disabled={buttonsDisabled} onClick={clearBoard}>
             Clear Board
           </button>
-          <button disabled={buttonsDisabled} onClick={clearBoard}>
+          <button disabled={buttonsDisabled} onClick={help}>
             Help
           </button>
         </div>

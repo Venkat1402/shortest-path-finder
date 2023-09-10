@@ -4,6 +4,7 @@ import "./PathFindingVisualizer.css";
 import Header from "./Header";
 import { useState, useEffect } from "react";
 import { dijkstra, getNodesInShortestPathOrder } from "../Algorithm/dijkstra";
+import ReactModal from "react-modal";
 
 const PathFindingVisualizer = () => {
   const [startNodeRow, setStartNodeRow] = useState(12);
@@ -11,15 +12,11 @@ const PathFindingVisualizer = () => {
   const [finishNodeRow, setFinishNodeRow] = useState(12);
   const [finishNodeCol, setFinishNodeCol] = useState(46);
 
-  const START_NODE_ROW = startNodeRow;
-  const START_NODE_COL = startNodeCol;
-  const FINISH_NODE_ROW = finishNodeRow;
-  const FINISH_NODE_COL = finishNodeCol;
-
   const [grid, setGrid] = useState([]);
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
   const [onClickClearBoard, setOnClickClearBoard] = useState(false);
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
+  const [showModal, setShowModal] = useState(true);
 
   useEffect(() => {
     const grid = getInitailaGrid();
@@ -61,8 +58,8 @@ const PathFindingVisualizer = () => {
     return {
       col: col,
       row: row,
-      isStart: row === START_NODE_ROW && col === START_NODE_COL,
-      isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
+      isStart: row === startNodeRow && col === startNodeCol,
+      isFinish: row === finishNodeRow && col === finishNodeCol,
       distance: Infinity,
       isVisited: false,
       isWall: false,
@@ -75,8 +72,8 @@ const PathFindingVisualizer = () => {
     const node = newGrid[row][col];
     // wall is created only to other nodes, not to start and finish nodes
     if (
-      node !== grid[START_NODE_ROW][START_NODE_COL] &&
-      node !== grid[FINISH_NODE_ROW][FINISH_NODE_COL]
+      node !== grid[startNodeRow][startNodeCol] &&
+      node !== grid[finishNodeRow][finishNodeCol]
     ) {
       const newNode = {
         ...node,
@@ -95,8 +92,8 @@ const PathFindingVisualizer = () => {
         const node = nodesInShortestPathOrder[i];
         // dont animate start and finish node
         if (
-          node !== grid[START_NODE_ROW][START_NODE_COL] &&
-          node !== grid[FINISH_NODE_ROW][FINISH_NODE_COL]
+          node !== grid[startNodeRow][startNodeCol] &&
+          node !== grid[finishNodeRow][finishNodeCol]
         ) {
           document.getElementById(`node-${node.row}-${node.col}`).className =
             "node node-shortest-path";
@@ -120,8 +117,8 @@ const PathFindingVisualizer = () => {
         const node = visitedNodesInOrder[i];
         // dont animate start and finish node
         if (
-          node !== grid[START_NODE_ROW][START_NODE_COL] &&
-          node !== grid[FINISH_NODE_ROW][FINISH_NODE_COL]
+          node !== grid[startNodeRow][startNodeCol] &&
+          node !== grid[finishNodeRow][finishNodeCol]
         ) {
           document.getElementById(`node-${node.row}-${node.col}`).className =
             "node node-visited";
@@ -132,8 +129,8 @@ const PathFindingVisualizer = () => {
 
   function visualizeDijkstra() {
     setButtonsDisabled(true);
-    const startNode = grid[START_NODE_ROW][START_NODE_COL];
-    const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+    const startNode = grid[startNodeRow][startNodeCol];
+    const finishNode = grid[finishNodeRow][finishNodeCol];
     const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
     animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
@@ -329,6 +326,26 @@ const PathFindingVisualizer = () => {
     }
   }
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      border: "1px solid rgb(12, 53, 71)",
+    },
+  };
+
   return (
     <>
       <div className="total-screen">
@@ -346,6 +363,7 @@ const PathFindingVisualizer = () => {
             finishRight={finishRight}
             createMaze={createMaze}
             clearBoard={clearBoard}
+            help={handleOpenModal}
             buttonsDisabled={buttonsDisabled}
           />
         </div>
@@ -377,6 +395,56 @@ const PathFindingVisualizer = () => {
             })}
           </div>
         </div>
+        <ReactModal
+          isOpen={showModal}
+          contentLabel="Minimal Modal Example"
+          style={customStyles}
+        >
+          <h1>How to Use Shortest Path Visualizer</h1>
+          <ul className="navText">
+            <div style={{ marginBottom: "5px" }}>
+              <b>
+                <u>Instructions</u>
+              </b>
+            </div>
+            <li>
+              To move the <b style={{ color: "green" }}>Start node</b> and{" "}
+              <b style={{ color: "red" }}>Finish node</b>, use the buttons
+              provided in the header bar.
+            </li>
+            <li>
+              To Draw the <b style={{ color: "rgb(12, 53, 71)" }}>Walls</b> on
+              the board, click on the empty nodes and drag the mouse vertically
+              or horizoantally.
+            </li>
+            <li>
+              Once you set the start node and finish node and the walls are
+              drawn, to Visualize Dijkstra's Algorithm <br />
+              click on the button mentioned in header.
+            </li>
+            <li>
+              To create a pre-defined maze, click on the Create Maze button
+              mentioned in header.
+            </li>
+            <li>
+              To clear the board after visualization, click on the Clear Board
+              button mentioned in header.
+            </li>
+          </ul>
+          <button
+            onClick={handleCloseModal}
+            style={{
+              position: "relative",
+              backgroundColor: "red",
+              color: "white",
+              padding: "10px",
+              marginTop: "30px",
+              float: "right",
+            }}
+          >
+            Close Modal
+          </button>
+        </ReactModal>
       </div>
     </>
   );
