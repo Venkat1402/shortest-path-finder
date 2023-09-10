@@ -7,10 +7,12 @@
 }
 .node-finish {
   background-color: red;
+  border-radius: 50%;
 }
 
 .node-start {
   background-color: green;
+  border-radius: 50%;
 }
 
 .node-wall {

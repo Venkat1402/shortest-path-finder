@@ -6,10 +6,10 @@ import { useState, useEffect } from "react";
 import { dijkstra, getNodesInShortestPathOrder } from "../Algorithm/dijkstra";
 
 const PathFindingVisualizer = () => {
-  const [startNodeRow, setStartNodeRow] = useState(10);
-  const [startNodeCol, setStartNodeCol] = useState(15);
-  const [finishNodeRow, setFinishNodeRow] = useState(10);
-  const [finishNodeCol, setFinishNodeCol] = useState(35);
+  const [startNodeRow, setStartNodeRow] = useState(12);
+  const [startNodeCol, setStartNodeCol] = useState(12);
+  const [finishNodeRow, setFinishNodeRow] = useState(12);
+  const [finishNodeCol, setFinishNodeCol] = useState(46);
 
   const START_NODE_ROW = startNodeRow;
   const START_NODE_COL = startNodeCol;
@@ -18,11 +18,14 @@ const PathFindingVisualizer = () => {
 
   const [grid, setGrid] = useState([]);
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
+  const [onClickClearBoard, setOnClickClearBoard] = useState(false);
+  const [buttonsDisabled, setButtonsDisabled] = useState(false);
 
   useEffect(() => {
     const grid = getInitailaGrid();
     setGrid(grid);
-  }, []);
+    setOnClickClearBoard(false);
+  }, [onClickClearBoard]);
 
   const handleMouseDown = (row, col) => {
     const newGrid = getNewGridWithWallToggled(grid, row, col);
@@ -100,6 +103,9 @@ const PathFindingVisualizer = () => {
         }
       }, 50 * i);
     }
+    setTimeout(() => {
+      setButtonsDisabled(false);
+    }, 50 * nodesInShortestPathOrder.length);
   }
 
   function animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
@@ -125,6 +131,7 @@ const PathFindingVisualizer = () => {
   }
 
   function visualizeDijkstra() {
+    setButtonsDisabled(true);
     const startNode = grid[START_NODE_ROW][START_NODE_COL];
     const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
     const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
@@ -140,18 +147,16 @@ const PathFindingVisualizer = () => {
   function clearBoard() {
     for (let i = 0; i < 28; i++) {
       for (let j = 0; j < 60; j++) {
-        if (grid[i][j] === grid[startNodeRow][startNodeCol]) {
-          setStartNodeRow(10);
-          setStartNodeCol(15);
-          document.getElementById(
-            `node-${startNodeRow}-${startNodeCol}`
-          ).className = "node node-start";
-        } else if (grid[i][j] === grid[finishNodeRow][finishNodeCol]) {
-          setFinishNodeRow(10);
-          setFinishNodeCol(35);
-          document.getElementById(
-            `node-${finishNodeRow}-${finishNodeCol}`
-          ).className = "node node-finish";
+        if (grid[i][j] === grid[12][12]) {
+          setStartNodeRow(12);
+          setStartNodeCol(12);
+          document.getElementById(`node-${12}-${12}`).className =
+            "node node-start";
+        } else if (grid[i][j] === grid[12][46]) {
+          setFinishNodeRow(12);
+          setFinishNodeCol(46);
+          document.getElementById(`node-${12}-${46}`).className =
+            "node node-finish";
         } else {
           const grid = getInitailaGrid;
           setGrid(grid);
@@ -159,6 +164,7 @@ const PathFindingVisualizer = () => {
         }
       }
     }
+    setOnClickClearBoard(true);
   }
   //////////////////////////// Start and Finish Nodes Movement /////////////////////////////////////////////////////////////
   function startUp() {
@@ -261,14 +267,12 @@ const PathFindingVisualizer = () => {
     ).className = "node node";
     setStartNodeRow(1);
     setStartNodeCol(1);
-    setFinishNodeRow(18);
-    setFinishNodeCol(48);
-    document.getElementById(
-      `node-${startNodeRow - 9}-${startNodeCol - 14}`
-    ).className = "node node-start";
-    document.getElementById(
-      `node-${finishNodeRow + 8}-${finishNodeCol + 13}`
-    ).className = "node node-finish";
+    setFinishNodeRow(25);
+    setFinishNodeCol(57);
+    console.log(startNodeRow, startNodeCol);
+    console.log(finishNodeRow, finishNodeCol);
+    document.getElementById(`node-${1}-${1}`).className = "node node-start";
+    document.getElementById(`node-${25}-${57}`).className = "node node-finish";
     ////////////////////////////////////////////////////////////////
     for (let i = 0; i < grid.length; i++) {
       for (let j = 0; j < grid[0].length; j++) {
@@ -277,33 +281,47 @@ const PathFindingVisualizer = () => {
           j === 0 ||
           i === grid.length - 1 ||
           j === grid[0].length - 1 ||
-          (j === 10 && (i === 1 || i === 2 || i === 3 || i === 4 || i === 5)) ||
-          (j === 26 && (i === 1 || i === 2 || i === 3 || i === 4 || i === 5)) ||
-          (j === 4 && (i === 3 || i === 4 || i === 5 || i === 6 || i === 7)) ||
-          (j === 8 && (i === 8 || i === 9 || i === 10 || i === 11)) ||
-          (j === 13 && (i === 10 || i === 11 || i === 12 || i === 13)) ||
-          (j === 13 && (i === 14 || i === 15 || i === 16 || i === 17)) ||
-          (j === 25 && (i === 15 || i === 16 || i === 17 || i === 18)) ||
-          (j === 34 && (i === 11 || i === 12 || i === 13 || i === 14)) ||
-          (j === 34 && (i === 15 || i === 16 || i === 17 || i === 18)) ||
-          (j === 45 && (i === 15 || i === 16 || i === 17 || i === 18)) ||
-          (j === 18 && (i === 4 || i === 5 || i === 6 || i === 7 || i === 8)) ||
-          (j === 22 && (i === 8 || i === 9 || i === 10 || i === 11)) ||
-          (j === 30 && (i === 6 || i === 7 || i === 8 || i === 9)) ||
-          (j === 37 && (i === 6 || i === 7 || i === 8 || i === 9)) ||
-          (j === 43 && (i === 10 || i === 11 || i === 12 || i === 13)) ||
-          (i === 7 && (j === 5 || j === 6 || j === 7 || j === 8 || j === 9)) ||
-          (i === 7 && (j === 10 || j === 11 || j === 12 || j === 13)) ||
-          (i === 7 && (j === 14 || j === 15 || j === 16 || j === 17)) ||
-          (i === 10 && (j === 37 || j === 38 || j === 39 || j === 40)) ||
-          (i === 10 && (j === 41 || j === 42)) ||
-          (i === 13 && (j === 1 || j === 2 || j === 3 || j === 4 || j === 5)) ||
-          (i === 17 && (j === 9 || j === 10 || j === 11 || j === 12)) ||
-          (i === 13 && (j === 1 || j === 2 || j === 3 || j === 4 || j === 5)) ||
-          (i === 6 && (j === 26 || j === 27 || j === 28 || j === 29)) ||
-          (i === 4 && (j === 41 || j === 42 || j === 43 || j === 44)) ||
-          (i === 4 && (j === 45 || j === 46 || j === 47 || j === 48)) ||
-          (i === 10 && (j === 27 || j === 28 || j === 29 || j === 30))
+          (j === 10 && i >= 1 && i <= 5) ||
+          (j === 26 && i >= 1 && i <= 5) ||
+          (j === 4 && i >= 3 && i <= 7) ||
+          (j === 8 && i >= 8 && i <= 11) ||
+          (j === 13 && i >= 10 && i <= 13) ||
+          (j === 13 && i >= 14 && i <= 17) ||
+          (j === 25 && i >= 15 && i <= 18) ||
+          (j === 34 && i >= 11 && i <= 14) ||
+          (j === 34 && i >= 15 && i <= 18) ||
+          (j === 45 && i >= 15 && i <= 18) ||
+          (j === 18 && i >= 4 && i <= 8) ||
+          (j === 22 && i >= 8 && i <= 11) ||
+          (j === 30 && i >= 6 && i <= 9) ||
+          (j === 37 && i >= 6 && i <= 9) ||
+          (j === 43 && i >= 10 && i <= 13) ||
+          (i === 7 && j >= 5 && j <= 9) ||
+          (i === 7 && j >= 10 && j <= 13) ||
+          (i === 7 && j >= 14 && j <= 17) ||
+          (i === 10 && j >= 37 && j <= 40) ||
+          (i === 10 && j >= 41 && j <= 42) ||
+          (i === 13 && j >= 1 && j <= 5) ||
+          (i === 17 && j >= 9 && j <= 12) ||
+          (i === 13 && j >= 1 && j <= 5) ||
+          (i === 6 && j >= 26 && j <= 29) ||
+          (i === 4 && j >= 41 && j <= 44) ||
+          (i === 4 && j >= 45 && j <= 48) ||
+          (i === 10 && j >= 27 && j <= 30) ||
+          (i === 22 && j >= 35 && j <= 40) ||
+          (i === 15 && j >= 50 && j <= 58) ||
+          (i === 20 && j >= 50 && j <= 58) ||
+          (i === 7 && j >= 54 && j <= 58) ||
+          (j === 48 && i >= 5 && i <= 10) ||
+          (j === 48 && i >= 23 && i <= 26) ||
+          (i === 24 && j >= 9 && j <= 17) ||
+          (j === 17 && i >= 12 && i <= 17) ||
+          (j === 29 && i >= 15 && i <= 23) ||
+          (j === 40 && i >= 15 && i <= 21) ||
+          (j === 32 && i >= 20 && i <= 26) ||
+          (i === 24 && j >= 9 && j <= 12) ||
+          (j === 8 && i >= 17 && i <= 24) ||
+          (i === 23 && j >= 21 && j <= 29)
         ) {
           grid[i][j].isWall = true;
         }
@@ -328,6 +346,7 @@ const PathFindingVisualizer = () => {
             finishRight={finishRight}
             createMaze={createMaze}
             clearBoard={clearBoard}
+            buttonsDisabled={buttonsDisabled}
           />
         </div>
         <div className="main">

@@ -15,35 +15,54 @@ const Header = (props) => {
     finishRight,
     createMaze,
     clearBoard,
+    buttonsDisabled,
   } = props;
   return (
     <div className="header">
       <div className="top-box">
         <h2>Shortest Path Visualizer</h2>
         <div className="movement-buttons">
-          <button onClick={startLeft}>{`<`}</button>
-          <div>
-            <button onClick={startUp}>^</button>
+          <button disabled={buttonsDisabled} onClick={startLeft}>{`<`}</button>
+          <div className="vertical-movement-buttons">
+            <button disabled={buttonsDisabled} onClick={startUp}>
+              ^
+            </button>
             <span>Start Node</span>
-            <button onClick={startDown}>v</button>
+            <button disabled={buttonsDisabled} onClick={startDown}>
+              v
+            </button>
           </div>
-          <button onClick={startRight}>{`>`}</button>
+          <button disabled={buttonsDisabled} onClick={startRight}>{`>`}</button>
         </div>
         <div className="movement-buttons">
-          <button onClick={finishLeft}>{`<`}</button>
-          <div>
-            <button onClick={finishUp}>^</button>
+          <button disabled={buttonsDisabled} onClick={finishLeft}>{`<`}</button>
+          <div className="vertical-movement-buttons">
+            <button disabled={buttonsDisabled} onClick={finishUp}>
+              ^
+            </button>
             <span>Finish Node</span>
-            <button onClick={finishDown}>v</button>
+            <button disabled={buttonsDisabled} onClick={finishDown}>
+              v
+            </button>
           </div>
-          <button onClick={finishRight}>{`>`}</button>
+          <button
+            disabled={buttonsDisabled}
+            onClick={finishRight}
+          >{`>`}</button>
         </div>
         <div className="buttons-box">
-          <button onClick={createMaze}>Create Maze</button>
-          <button onClick={visualizeDijkstra}>
+          <button disabled={buttonsDisabled} onClick={createMaze}>
+            Create Maze
+          </button>
+          <button disabled={buttonsDisabled} onClick={visualizeDijkstra}>
             Visualize Dijkstra's Algorithm
           </button>
-          <button onClick={clearBoard}>Clear Board</button>
+          <button disabled={buttonsDisabled} onClick={clearBoard}>
+            Clear Board
+          </button>
+          <button disabled={buttonsDisabled} onClick={clearBoard}>
+            Help
+          </button>
         </div>
       </div>
     </div>
